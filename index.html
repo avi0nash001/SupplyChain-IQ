@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SupplyChainIQ — Live Demo</title>
+<style>
+:root{--bg:#f4f6fb;--cd:#fff;--tx:#0f1b3d;--mu:#5b6785;--bd:#e1e6f0;--ac:#ff7a1a;--ok:#12a36b;--wa:#e0a100;--hi:#f0641e;--cr:#e03a3a;--bl:#2a6fdb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1226;--cd:#131c36;--tx:#e8ecf8;--mu:#93a0c4;--bd:#243055;--ok:#2ed39a;--wa:#f5c542;--hi:#ff8a45;--cr:#ff5c5c;--bl:#5b9bff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1226;--cd:#131c36;--tx:#e8ecf8;--mu:#93a0c4;--bd:#243055;--ok:#2ed39a;--wa:#f5c542;--hi:#ff8a45;--cr:#ff5c5c;--bl:#5b9bff;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1200px;margin:0 auto;padding:16px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+h1{margin:0;font-size:26px;letter-spacing:-.5px}h1 b{color:var(--ac)}
+h3{margin:0 0 8px;font-size:17px}
+.sub{color:var(--mu);font-size:12px}
+.tb{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--cr)}
+.live i{width:9px;height:9px;border-radius:50%;background:var(--cr);animation:p 1.2s infinite}
+@keyframes p{50%{opacity:.2}}
+@media(prefers-reduced-motion:reduce){.live i{animation:none}}
+button{font:inherit;border:1px solid var(--bd);background:var(--cd);color:var(--tx);padding:8px 13px;border-radius:8px;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--bl);outline-offset:2px}
+button.pr{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:700}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.c{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px}
+.k b{display:block;font-size:24px}
+.g{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:12px;margin-bottom:12px}
+@media(max-width:860px){.g{grid-template-columns:minmax(0,1fr)}}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:6px}
+th{font-size:12px;text-align:left;color:var(--mu);padding:6px;font-weight:600}
+td{padding:8px 6px;border-top:1px solid var(--bd)}
+tr.r{cursor:pointer}tr.r:hover,tr.sel{background:rgba(255,122,26,.12)}
+.bd{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+.bar{height:6px;background:var(--bd);border-radius:4px;overflow:hidden;min-width:56px;margin-bottom:3px}.bar i{display:block;height:100%}
+.ev{margin:6px 0 12px;padding:0;list-style:none}.ev li{padding:3px 0}
+#feed div{padding:5px 0;border-top:1px solid var(--bd);font-size:13px}
+label{display:block;margin:10px 0 2px}input[type=range]{width:100%;accent-color:var(--ac)}
+.wi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.wi b{display:block;font-size:17px}
+svg{display:block}.ar{fill:var(--bl);opacity:.12}.ln{fill:none;stroke:var(--bl);stroke-width:2.5}.zn{fill:var(--cr);opacity:.14}
+.et{stroke:var(--ac);stroke-width:2;stroke-dasharray:5 4}.ax{stroke:var(--bd)}.tl{font-size:11px;fill:var(--mu)}
+#ts{position:fixed;right:12px;top:calc(12px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;z-index:9;max-width:min(340px,calc(100vw - 24px))}
+.to{background:var(--cd);border:1px solid var(--cr);border-left:5px solid var(--cr);border-radius:10px;padding:10px 12px;box-shadow:0 6px 24px rgba(0,0,0,.25);font-size:13px}
+</style></head><body>
+<div class="w">
+<header>
+<div><h1>Supply<b>Chain</b>IQ</h1><div class="sub">Predict shortages before they happen. Act before sales are lost. Team Shrey, MineArena 1.0</div></div>
+<div class="tb"><span class="live"><i></i>LIVE &nbsp;Day <span id="dy">0.0</span></span><button id="pz">⏸ Pause</button><button class="pr" id="ij">⚡ Inject disruption</button></div>
+</header>
+<div class="k" id="k"></div>
+<div class="g">
+<div class="c tw"><b>Risk ranking</b> <span class="sub">Click an item to see the evidence</span><table id="t"></table></div>
+<div><div class="c" id="dt"></div><div class="c" style="margin-top:12px"><b>Stock projection, next 14 days</b><div id="ch"></div></div></div>
+</div>
+<div class="g">
+<div class="c"><b>What-if simulator</b> <span class="sub">Test a delay or demand spike before you decide</span>
+<label>Delivery delay <b>+<span id="wdv">0</span> days</b><input type="range" id="wd" min="0" max="7" value="0"></label>
+<label>Demand spike <b>+<span id="wsv">0</span>%</b><input type="range" id="ws" min="0" max="80" step="5" value="0"></label>
+<div id="wi"></div></div>
+<div class="c"><b>Live event stream</b> <span class="sub">Simulated deliveries, orders and stock updates</span><div id="feed"></div></div>
+</div>
+<p class="sub">Demo runs on a built-in event simulator (our Phase 1 plan). Production path: Kafka or Redis Streams, PostgreSQL, Prophet and statsmodels, FastAPI, Streamlit.</p>
+</div>
+<div id="ts"></div>
+<script>
+const S=[
+{n:"Basmati Rice 25kg",e:"🍚",st:150,u:20,eta:4,lt:4,p:1450,sp:[["Karnataka Agro Hub",3,1380],["Hubballi Traders",2,1425],["Metro B2B Express",1,1510]]},
+{n:"Sunflower Oil 1L",e:"🛢️",st:120,u:45,eta:5,lt:5,p:135,sp:[["Davangere Oil Mills",2,128],["Bengaluru Wholesale",3,124],["QuickMart B2B",1,141]]},
+{n:"Toor Dal 1kg",e:"🫘",st:200,u:18,eta:6,lt:6,p:160,sp:[["Kalaburagi Pulses",4,152],["Gadag Traders",2,158],["Metro B2B Express",1,171]]},
+{n:"Tea Powder 500g",e:"🍵",st:40,u:12,eta:3,lt:3,p:210,sp:[["Chikmagalur Estates",3,196],["Mysuru Blends",2,204],["QuickMart B2B",1,226]]},
+{n:"Detergent 1kg",e:"🧼",st:260,u:15,eta:4,lt:4,p:120,sp:[["Shivamogga Distributors",3,108],["Hubballi Traders",2,114],["Metro B2B Express",1,131]]},
+{n:"Sugar 5kg",e:"🍬",st:130,u:16,eta:2,lt:2,p:235,sp:[["Davangere Sugars",2,222],["Mandya Co-op",3,215],["QuickMart B2B",1,248]]}
+].map(x=>({...x,sg:0,dl:0,oq:Math.ceil(x.u*10),lv:3}));
+let day=0,n=0,paused=false,sel=1,w={d:0,s:0};
+const LV=["Critical","High","Watch","Safe"],CL=["var(--cr)","var(--hi)","var(--wa)","var(--ok)"],L=[],$=i=>document.getElementById(i),fm=v=>"₹"+Math.round(v).toLocaleString("en-IN");
+const lg=(i,t)=>{n++;L.unshift([day,i,t]);if(L.length>7)L.pop()};
+const calc=(x,v)=>{v=v||{d:0,s:0};const u=x.u*(1+(x.sg+v.s)/100),dl=x.st/u,e=x.eta+x.dl+v.d,m=dl-e;return{u,dl,e,m,sc:Math.max(2,Math.min(99,Math.round(50-m*10))),lv:m<0?0:m<2?1:m<5?2:3,q:Math.max(0,Math.ceil(u*(x.lt+3)-x.st))}};
+const badge=c=>`<span class="bd" style="background:${CL[c.lv]};color:${c.lv==2?"#222":"#fff"}">${LV[c.lv]} ${c.sc}</span>`;
+const toast=t=>{const d=document.createElement("div");d.className="to";d.textContent=t;$("ts").appendChild(d);setTimeout(()=>d.remove(),5000)};
+const rs=()=>{w={d:0,s:0};$("wd").value=0;$("ws").value=0};
+function pick(i){sel=i;rs();render()}
+function detail(){
+const x=S[sel],c=calc(x),rk=x.sp.map(s=>({n:s[0],l:s[1],c:s[2],ok:s[1]<c.dl})).sort((a,b)=>b.ok-a.ok||(a.ok?a.c-b.c:a.l-b.l));
+const ev=[x.dl?`🚚 Delivery delayed <b>${x.dl}d</b>, new ETA ${(x.eta+x.dl).toFixed(1)}d`:`🚚 Delivery on schedule, ETA ${x.eta.toFixed(1)}d`,
+`📈 Usage <b>${x.sg>0?"+":""}${x.sg}%</b> vs baseline (${c.u.toFixed(1)} units/day)`,
+`📦 Stock covers <b>${c.dl.toFixed(1)} days</b> (${Math.round(x.st)} units left)`,
+c.m<0?`⚠️ Stockout <b>${(-c.m).toFixed(1)}d before</b> the delivery arrives`:`✅ Delivery lands ${c.m.toFixed(1)}d before stockout`];
+$("dt").innerHTML=`<h3>${x.e} ${x.n} ${badge(c)}</h3><b>Why this alert</b><ul class="ev">${ev.map(t=>"<li>"+t+"</li>").join("")}</ul><b>Recommended action</b><p style="margin:4px 0 12px">${c.q?`Reorder <b>${c.q} units</b> now <span class="sub">usage × (lead ${x.lt}d + 3d buffer) − stock</span>`:"No reorder needed. Stock covers lead time plus buffer."}</p><b>Backup suppliers, ranked</b><table>${rk.map((s,i)=>`<tr><td>${i?"":"⭐ "}${s.n}</td><td>${s.l}d</td><td>${fm(s.c)}/unit</td><td>${s.ok?"✅ before stockout":"⏳ after stockout"}</td></tr>`).join("")}</table>`}
+function chart(){
+const x=S[sel],c=calc(x,w),u=c.u,e=c.e,f=t=>Math.max(0,t<e?x.st-u*t:Math.max(0,x.st-u*e)+x.oq-u*(t-e));
+const P=[];let m=1;for(let t=0;t<=14;t+=.25){const v=f(t);P.push([t,v]);m=Math.max(m,v)}
+const X=t=>40+t*38,Y=v=>170-v/m*150,E=Math.min(e,14),z=c.dl,d=P.map((p,i)=>(i?"L":"M")+X(p[0])+","+Y(p[1]).toFixed(1)).join("");
+$("ch").innerHTML=`<svg viewBox="0 0 580 200" width="100%"><path class="ar" d="${d}L${X(14)},170L40,170Z"/><path class="ln" d="${d}"/>${z<E?`<rect class="zn" x="${X(z)}" y="20" width="${X(E)-X(z)}" height="150"/><text class="tl" style="fill:var(--cr)" x="${(X(z)+X(E))/2}" y="40" text-anchor="middle">Stockout gap ${(e-z).toFixed(1)}d</text>`:""}<line class="et" x1="${X(E)}" x2="${X(E)}" y1="20" y2="170"/><text class="tl" x="${X(E)}" y="14" text-anchor="middle">Delivery ETA ${e.toFixed(1)}d</text><line class="ax" x1="40" x2="560" y1="170" y2="170"/>${[0,7,14].map(t=>`<text class="tl" x="${X(t)}" y="188" text-anchor="middle">${t}d</text>`).join("")}</svg>`}
+function wi(){
+const x=S[sel],a=calc(x),b=calc(x,w);
+$("wi").innerHTML=`<div class="sub" style="margin-top:12px">Testing on ${x.e} ${x.n}</div><div class="wi"><div><span class="sub">Risk score</span><b>${a.sc} → <span style="color:${CL[b.lv]}">${b.sc}</span></b></div><div><span class="sub">Stockout vs delivery</span><b>${b.dl.toFixed(1)}d vs ${b.e.toFixed(1)}d</b></div><div><span class="sub">Reorder quantity</span><b>${a.q} → ${b.q}</b></div></div>`}
+function render(){
+$("dy").textContent=day.toFixed(1);
+const R=S.map((x,i)=>({x,i,c:calc(x)})).sort((a,b)=>b.c.sc-a.c.sc);
+R.forEach(r=>{if(r.c.lv<2&&r.x.lv>=2)toast("🚨 "+r.x.n+": stockout in "+r.c.dl.toFixed(1)+"d, delivery in "+r.c.e.toFixed(1)+"d");r.x.lv=r.c.lv});
+$("k").innerHTML=[["Items monitored",S.length],["High or critical",R.filter(r=>r.c.lv<2).length],["Revenue at risk",fm(R.reduce((s,r)=>s+Math.max(0,-r.c.m)*r.c.u*r.x.p,0))],["Events processed",n.toLocaleString("en-IN")]].map(a=>`<div class="c"><span class="sub">${a[0]}</span><b>${a[1]}</b></div>`).join("");
+$("t").innerHTML="<tr><th>Item</th><th>Stock</th><th>Days left</th><th>ETA</th><th>Risk</th></tr>"+R.map(r=>`<tr class="r${r.i==sel?" sel":""}" onclick="pick(${r.i})"><td>${r.x.e} ${r.x.n}</td><td>${Math.round(r.x.st)}</td><td><div class="bar"><i style="width:${Math.min(100,r.c.dl*8)}%;background:${CL[r.c.lv]}"></i></div>${r.c.dl.toFixed(1)}d</td><td>${r.c.e.toFixed(1)}d</td><td>${badge(r.c)}</td></tr>`).join("");
+detail();chart();wi();
+$("feed").innerHTML=L.map(l=>`<div><b>D+${l[0].toFixed(1)}</b> ${l[1]} ${l[2]}</div>`).join("");
+$("wdv").textContent=w.d;$("wsv").textContent=w.s}
+function tick(){
+day+=.1;
+S.forEach(x=>{x.st=Math.max(0,x.st-x.u*(1+x.sg/100)*.1);x.eta-=.1;n++;
+if(x.eta+x.dl<=0){x.st+=x.oq;x.eta=x.lt;x.dl=0;x.sg=Math.max(0,x.sg-15);lg("📦","Delivery received: "+x.oq+" units of "+x.n)}});
+if(Math.random()<.6){const x=S[Math.random()*S.length|0],r=Math.random(),k=1+(Math.random()*18|0);
+if(r<.35){const d=1+(k%2);x.dl=Math.min(10,x.dl+d);lg("🚚","Delivery delayed +"+d+"d: "+x.n)}
+else if(r<.75){x.sg=Math.min(120,x.sg+k);lg("🛒","Order surge +"+k+"%: "+x.n)}
+else{x.sg=Math.max(0,x.sg-k);lg("📉","Demand eased −"+k+"%: "+x.n)}}
+render()}
+$("wd").oninput=$("ws").oninput=()=>{w={d:+$("wd").value,s:+$("ws").value};render()};
+$("pz").onclick=()=>{paused=!paused;$("pz").textContent=paused?"▶ Resume":"⏸ Pause"};
+$("ij").onclick=()=>{const R=S.map((x,i)=>({i,c:calc(x)})).sort((a,b)=>b.c.m-a.c.m)[0],x=S[R.i];x.dl+=4;x.sg=Math.min(120,x.sg+40);lg("🚨","Disruption injected: "+x.n+", +4d delay and +40% demand");sel=R.i;rs();render()};
+lg("🟢","Event stream connected, monitoring "+S.length+" items");
+render();setInterval(()=>{if(!paused)tick()},1200);
+</script></body></html>
