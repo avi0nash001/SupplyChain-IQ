@@ -5,6 +5,8 @@ Real-Time Supply-Chain Disruption Predictor. Predict shortages before they happe
 Built by Team Shrey for MineArena 1.0 at University of BDT College of Engineering, Davanagere.
 
 Visit Site : https://avi0nash001.github.io/SupplyChain-IQ/
+
+
 What it does
 
 Late deliveries and sudden demand swings cause stockouts, and most teams find out only after the shortage has happened. SupplyChainIQ watches inventory, order and delivery events as they happen, predicts which items will run out before their delivery arrives, and tells the user what to do about it.
